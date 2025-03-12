@@ -16,6 +16,7 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    width: 80vw;
     padding: 20px;
     overflow-y: auto;
 }
@@ -37,6 +38,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
+    width: 80vw;
     background-color: #35393E;
     overflow-x: hidden;
     overflow-y: auto;
@@ -45,6 +47,7 @@ body {
 #message-input {
     margin-bottom: 20px;
     padding: 20px;
+    width: 80vw;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     color: #FFFFFF;
@@ -55,14 +58,14 @@ body {
 }
 
 #user-container {
-    width: 250px;
+    width: 10vw;
     background-color: #2F3136;
     color: white;
     padding: 20px;
 }
 
 #servers-container {
-    width: 250px;
+    width: 10vw;
     background-color: #2F3136;
     color: white;
     padding: 20px;
@@ -82,6 +85,19 @@ p {
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     color: #FFFFFF;
+}
+
+button {
+    display: block;
+    margin: 0;
+    padding: 5px;
+    font-family: gg-sans-bold, sans-serif;
+    font-size: 18px;
+    text-decoration: underline;
+    color: #FFFFFF;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 b {

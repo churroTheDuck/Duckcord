@@ -8,7 +8,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyByn0r_mDko9LlZh9NC_x5KZjqA4eTu8eo",
@@ -25,7 +25,12 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
         
-        var server = "messages/";
+        let server = "messages/";
+        const messagesContainer = document.getElementById("messages-container");
+        let lastMessageTime = 0;
+        let unreadMessages = 0;
+        let messagesRef;
+        let unsubscribe = null;
 
         function writeUserData(message, name, uid) {
             const timestamp = Date.now();
@@ -46,6 +51,45 @@
             return names[0];
         }
 
+        function listenForMessages() {
+            if (unsubscribe) {
+                unsubscribe(); // Detach the old listener
+            }
+
+            messagesRef = ref(db, server);
+            unsubscribe = onValue(messagesRef, (snapshot) => {
+                const isAtBottom = messagesContainer.scrollTop + messagesContainer.clientHeight >= messagesContainer.scrollHeight - 5;
+                messagesContainer.innerHTML = "";
+
+                const messages = snapshot.val();
+                if (messages) {
+                    Object.values(messages).forEach(({ username, message, timestamp }) => {
+                        const msg = document.createElement("p");
+                        const time = new Date(timestamp).toLocaleTimeString();
+                        msg.textContent = `${time} - ${username}: ${message}`;
+                        messagesContainer.appendChild(msg);
+                    });
+                }
+
+                if (isAtBottom) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+
+                if (document.hidden) {
+                    unreadMessages++;
+                    updateTitle();
+                }
+            });
+        }
+
+        function updateTitle() {
+            if (unreadMessages > 0) {
+                document.title = `(${unreadMessages}) Duckcord`;
+            } else {
+                document.title = "Duckcord";
+            }
+        }
+
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.href = "../signin";
@@ -62,11 +106,10 @@
             }
         });
 
-
         document.addEventListener("DOMContentLoaded", () => {
             const onlineUsersContainer = document.getElementById("user-container");
-
             const onlineUsersRef = ref(db, "onlineUsers/");
+
             onValue(onlineUsersRef, (snapshot) => {
                 const users = snapshot.val();
                 onlineUsersContainer.innerHTML = "<b>Online Users</b>";
@@ -84,12 +127,17 @@
                 }
             });
 
+            document.getElementById("general").addEventListener("click", () => {
+                server = "messages/";
+                listenForMessages();
+            });
 
-            const messagesContainer = document.getElementById("messages-container");
-            let lastMessageTime = 0; // Track the last message timestamp
-            let unreadMessages = 0;
+            document.getElementById("test").addEventListener("click", () => {
+                server = "test/";
+                listenForMessages();
+            });
 
-            document.getElementById("message-input").addEventListener("keypress", function (event) {
+            document.getElementById("message-input").addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     const user = auth.currentUser;
@@ -114,44 +162,13 @@
                 }
             });
 
-            const messagesRef = ref(db, server);
-            onValue(messagesRef, (snapshot) => {
-                const isAtBottom = messagesContainer.scrollTop + messagesContainer.clientHeight >= messagesContainer.scrollHeight - 5;
-
-                messagesContainer.innerHTML = "";
-
-                const messages = snapshot.val();
-                if (messages) {
-                    Object.values(messages).forEach(({ username, message, timestamp }) => {
-                        const msg = document.createElement("p");
-                        const time = new Date(timestamp).toLocaleTimeString();
-                        msg.textContent = `${time} - ${username}: ${message}`;
-                        messagesContainer.appendChild(msg);
-                    });
-                }
-
-                if (isAtBottom) {
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-
-                if (document.hidden) {
-                    unreadMessages++;
-                    updateTitle();
-                }
-            });
-
-            function updateTitle() {
-                if (unreadMessages > 0) {
-                    document.title = `(${unreadMessages}) Duckcord`;
-                } else {
-                    document.title = "Duckcord";
-                }
-            }
-
             window.addEventListener("focus", () => {
                 unreadMessages = 0;
                 updateTitle();
             });
+
+            // Initial listener setup
+            listenForMessages();
         });
     </script>
     <link rel="stylesheet" href="../style.css">
@@ -163,7 +180,10 @@
         <h1>Duckcord™ by Lang</h1>
     </div>
     <div id="main">
-        <div id="servers-container"></div>
+        <div id="servers-container">
+            <button id="general">General</button>
+            <button id="test">Test</button>
+        </div>
         <div id="content">
             <div id="messages-container"></div>
             <input type="text" id="message-input" placeholder="Message">
