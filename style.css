@@ -46,6 +46,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     margin: 0;
+    padding-bottom: 20px;
     width: 80vw;
     background-color: #35393E;
     overflow-x: hidden;
