@@ -24,7 +24,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-        
+
         let server = "messages/";
         const messagesContainer = document.getElementById("messages-container");
         let lastMessageTime = 0;
@@ -64,10 +64,29 @@
                 const messages = snapshot.val();
                 if (messages) {
                     Object.values(messages).forEach(({ username, message, timestamp }) => {
+                        const messageElement = document.createElement("div");
+                        messageElement.id = "message-element";
+                        const name = document.createElement("p");
                         const msg = document.createElement("p");
                         const time = new Date(timestamp).toLocaleTimeString();
-                        msg.textContent = `${time} - ${username}: ${message}`;
-                        messagesContainer.appendChild(msg);
+                        name.textContent = `${username}:`;
+                        switch (username) {
+                            case "Lang":
+                                name.style.color = "DodgerBlue";
+                                break;
+                            case "Ming-Yi":
+                                name.style.color = "RebeccaPurple";
+                                break;
+                            case "Kepler":
+                                name.style.color = "Goldenrod";
+                                break;
+                            default:
+                                msg.textContent = `${message} (${time})`;
+                        }
+                        msg.textContent = `${message}`;
+                        messageElement.appendChild(name);
+                        messageElement.appendChild(msg);
+                        messagesContainer.appendChild(messageElement);
                     });
                 }
 
@@ -161,6 +180,8 @@
                     }, 100);
                 }
             });
+            document.querySelector('emoji-picker')
+                .addEventListener('emoji-click', event => document.getElementById("message-input").value += event.detail.unicode);
 
             window.addEventListener("focus", () => {
                 unreadMessages = 0;
@@ -171,6 +192,7 @@
             listenForMessages();
         });
     </script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" type="image/x-icon" href="../duckLogo.svg">
 </head>
@@ -187,7 +209,10 @@
         </div>
         <div id="content">
             <div id="messages-container"></div>
-            <input type="text" id="message-input" placeholder="Message">
+            <div id="input-container">
+                <input type="text" id="message-input" placeholder="Message">
+                <emoji-picker></emoji-picker>
+            </div>
         </div>
         <div id="user-container"></div>
     </div>
