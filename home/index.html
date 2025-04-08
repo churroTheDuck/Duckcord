@@ -62,6 +62,7 @@
                 messagesContainer.innerHTML = "";
 
                 const messages = snapshot.val();
+                var lastUser;
                 if (messages) {
                     Object.values(messages).forEach(({ username, message, timestamp }) => {
                         const messageElement = document.createElement("div");
@@ -69,7 +70,6 @@
                         const name = document.createElement("p");
                         const msg = document.createElement("p");
                         const time = new Date(timestamp).toLocaleTimeString();
-                        name.textContent = `${username}:`;
                         switch (username) {
                             case "Lang":
                                 name.style.color = "DodgerBlue";
@@ -80,13 +80,22 @@
                             case "Kepler":
                                 name.style.color = "Goldenrod";
                                 break;
+                            case "Arisa":
+                                name.style.color = "Pink";
+                                break;
                             default:
-                                msg.textContent = `${message} (${time})`;
+                                console.log("u dont get color");
                         }
                         msg.textContent = `${message}`;
+                        if (lastUser != username) {
+                            name.textContent = `${username}:`;
+                        } else {
+                            name.style.display = "none";
+                        }
                         messageElement.appendChild(name);
                         messageElement.appendChild(msg);
                         messagesContainer.appendChild(messageElement);
+                        lastUser = username;
                     });
                 }
 
@@ -209,10 +218,8 @@
         </div>
         <div id="content">
             <div id="messages-container"></div>
-            <div id="input-container">
-                <input type="text" id="message-input" placeholder="Message">
-                <emoji-picker></emoji-picker>
-            </div>
+            <input type="text" id="message-input" placeholder="Message">
+            <emoji-picker></emoji-picker>
         </div>
         <div id="user-container"></div>
     </div>
