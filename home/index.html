@@ -66,10 +66,21 @@
                 if (messages) {
                     Object.values(messages).forEach(({ username, message, timestamp }) => {
                         const messageElement = document.createElement("div");
+                        const nameDate = document.createElement("div");
                         messageElement.id = "message-element";
+                        nameDate.id = "name-date";
                         const name = document.createElement("p");
+                        const date = document.createElement("p");
                         const msg = document.createElement("p");
-                        const time = new Date(timestamp).toLocaleTimeString();
+                        const time = new Date(timestamp).toLocaleString(undefined, {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+
                         switch (username) {
                             case "Lang":
                                 name.style.color = "DodgerBlue";
@@ -92,18 +103,43 @@
                             case "Channing":
                                 name.style.color = "Crimson";
                                 break;
+                            case "Nathaniel":
+                                name.style.background = "linear-gradient(90deg, \
+  rgba(255, 0, 0, 1) 0%, \
+  rgba(255, 154, 0, 1) 10%, \
+  rgba(208, 222, 33, 1) 20%, \
+  rgba(79, 220, 74, 1) 30%, \
+  rgba(63, 218, 216, 1) 40%, \
+  rgba(47, 201, 226, 1) 50%, \
+  rgba(28, 127, 238, 1) 60%, \
+  rgba(95, 21, 242, 1) 70%, \
+  rgba(186, 12, 248, 1) 80%, \
+  rgba(251, 7, 217, 1) 90%, \
+  rgba(255, 0, 0, 1) 100%)";
+
+                                name.style.webkitBackgroundClip = "text";
+                                name.style.webkitTextFillColor = "transparent";
+
+
+                                break;
                             default:
                                 console.log("u dont get color");
                         }
                         msg.textContent = `${message}`;
                         if (lastUser != username) {
                             name.style.fontFamily = "gg-sans-bold";
-                            name.textContent = `${username} ${time}`;
+                            name.style.marginRight = "10px";
+                            name.textContent = username;
+                            date.style.fontSize = "14px";
+                            date.style.color = "LightGray";
+                            date.textContent = time;
                         } else {
                             name.style.display = "none";
                             messageElement.style.margin = "0px";
                         }
-                        messageElement.appendChild(name);
+                        nameDate.appendChild(name);
+                        nameDate.appendChild(date);
+                        messageElement.appendChild(nameDate);
                         messageElement.appendChild(msg);
                         messagesContainer.appendChild(messageElement);
                         lastUser = username;
