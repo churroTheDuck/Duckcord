@@ -57,6 +57,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     margin-top: 10px;
+    padding-left: 20px;
     background-color: #35393E;
 }
 
