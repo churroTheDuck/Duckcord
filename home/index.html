@@ -97,9 +97,11 @@
                         }
                         msg.textContent = `${message}`;
                         if (lastUser != username) {
-                            name.textContent = `${username}:`;
+                            name.style.fontFamily = "gg-sans-bold";
+                            name.textContent = `${username}`;
                         } else {
                             name.style.display = "none";
+                            messageElement.style.margin = "0px";
                         }
                         messageElement.appendChild(name);
                         messageElement.appendChild(msg);
