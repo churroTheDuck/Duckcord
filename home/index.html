@@ -192,13 +192,17 @@
             }
             serversList.forEach(serverThing => {
                 const serverButton = document.createElement("button");
+                console.log(serverThing)
+                console.log(server)
                 if (serverThing + "/" == server) {
+                    console.log("yeh")
                     serverButton.style.color = "#FFFFFF";
                     serverButton.style.background = "#40444B";
                 }
                 serverButton.textContent = "#" + serverThing;
                 serverButton.addEventListener("click", () => {
                     server = serverThing + "/";
+                    listServers();
                     listenForMessages();
                 });
                 document.getElementById("servers-container").appendChild(serverButton);
