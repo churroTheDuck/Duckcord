@@ -183,6 +183,8 @@
         });
 
         function listServers() {
+            serversList = [];
+            document.getElementById("servers-container").innerHTML = "<b>Servers</b><input type='text' id='server-name' placeholder='Server Name'>";
             if (localStorage.serversList) {
                 serversList = JSON.parse(localStorage.serversList);
             } else {
