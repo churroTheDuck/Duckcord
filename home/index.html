@@ -31,6 +31,7 @@
         let unreadMessages = 0;
         let messagesRef;
         let unsubscribe = null;
+        var serversList;
 
         function writeUserData(message, name, uid) {
             const timestamp = Date.now();
@@ -181,12 +182,24 @@
             }
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
+        function listServers() {
             if (localStorage.serversList) {
-                var serversList = JSON.parse(localStorage.serversList);
+                serversList = JSON.parse(localStorage.serversList);
             } else {
-                var serversList = ["messages", "test"];
+                serversList = ["messages", "test"];
             }
+            serversList.forEach(serverThing => {
+                const serverButton = document.createElement("button");
+                serverButton.textContent = serverThing;
+                serverButton.addEventListener("click", () => {
+                    server = serverThing + "/";
+                    listenForMessages();
+                });
+                document.getElementById("servers-container").appendChild(serverButton);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
             const onlineUsersContainer = document.getElementById("user-container");
             const onlineUsersRef = ref(db, "onlineUsers/");
 
@@ -207,15 +220,20 @@
                 }
             });
 
-            serversList.forEach(serverThing => {
-                const serverButton = document.createElement("button");
-                serverButton.textContent = serverThing;
-                serverButton.addEventListener("click", () => {
-                    server = serverThing + "/";
-                    console.log(server)
-                    listenForMessages();
-                });
-                document.getElementById("servers-container").appendChild(serverButton);
+            listServers();
+
+            document.getElementById("server-name").addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    if (serversList.includes(document.getElementById("server-name").value)) {
+                        console.log("Server already exists.");
+                        return;
+                    } else {
+                        serversList.push(document.getElementById("server-name").value);
+                        localStorage.serversList = JSON.stringify(serversList);
+                        listServers();
+                    }
+                }
             });
 
             document.getElementById("message-input").addEventListener("keypress", (event) => {
@@ -266,6 +284,7 @@
     <div id="main">
         <div id="servers-container">
             <b>Servers</b>
+            <input type="text" id="server-name" placeholder="Server Name">
         </div>
         <div id="content">
             <div id="messages-container"></div>

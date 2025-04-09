@@ -135,6 +135,18 @@ b {
     color: #FFFFFF;
 }
 
+#server-name {
+    margin: 0;
+    padding: 5px;
+    font-family: gg-sans-medium, sans-serif;
+    font-size: 18px;
+    background-color: #40444B;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    color: #FFFFFF;
+}
+
 /*.signin {
     max-width: 320px;
     display: flex;
