@@ -71,9 +71,11 @@ body {
 }
 
 #message-input {
-    margin-bottom: 20px;
+    position: absolute;
+    bottom: 25px;
+    right: 22vw;
     padding: 20px;
-    width: 76vw;
+    width: 56vw;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     height: 75px;
@@ -85,14 +87,14 @@ body {
 }
 
 #user-container {
-    width: 10vw;
+    width: 20vw;
     background-color: #2F3136;
     color: white;
     padding: 20px;
 }
 
 #servers-container {
-    width: 10vw;
+    width: 20vw;
     background-color: #2F3136;
     color: white;
     padding: 20px;
@@ -116,13 +118,17 @@ p {
 
 button {
     display: block;
-    margin: 0;
-    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     text-decoration: underline;
-    color: #FFFFFF;
+    width: 100%;
+    text-align: left;
+    color: #747474;
     background: none;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
 }
@@ -136,8 +142,9 @@ b {
 }
 
 #server-name {
-    margin: 0;
-    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     background-color: #40444B;
@@ -190,7 +197,7 @@ b {
 emoji-picker {
     position: absolute;
     bottom: 100px;
-    right: 12vw;
+    right: 22vw;
     width: 300px;
     height: 300px;
     --background: #2F3136;

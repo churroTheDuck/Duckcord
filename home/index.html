@@ -192,7 +192,11 @@
             }
             serversList.forEach(serverThing => {
                 const serverButton = document.createElement("button");
-                serverButton.textContent = serverThing;
+                if (serverThing + "/" == server) {
+                    serverButton.style.color = "#FFFFFF";
+                    serverButton.style.background = "#40444B";
+                }
+                serverButton.textContent = "#" + serverThing;
                 serverButton.addEventListener("click", () => {
                     server = serverThing + "/";
                     listenForMessages();
@@ -234,6 +238,8 @@
                         serversList.push(document.getElementById("server-name").value);
                         localStorage.serversList = JSON.stringify(serversList);
                         listServers();
+                        server = document.getElementById("server-name").value + "/";
+                        listenForMessages();
                     }
                 }
             });
