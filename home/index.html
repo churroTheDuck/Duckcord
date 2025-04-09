@@ -86,7 +86,7 @@
                                 name.style.color = "DodgerBlue";
                                 break;
                             case "Ming-Yi":
-                                name.style.color = "BlueViolet";
+                                name.style.color = "Plum";
                                 break;
                             case "Kepler":
                                 name.style.color = "Goldenrod";
@@ -182,6 +182,11 @@
         });
 
         document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.serversList) {
+                var serversList = JSON.parse(localStorage.serversList);
+            } else {
+                var serversList = ["messages", "test"];
+            }
             const onlineUsersContainer = document.getElementById("user-container");
             const onlineUsersRef = ref(db, "onlineUsers/");
 
@@ -202,14 +207,15 @@
                 }
             });
 
-            document.getElementById("general").addEventListener("click", () => {
-                server = "messages/";
-                listenForMessages();
-            });
-
-            document.getElementById("test").addEventListener("click", () => {
-                server = "test/";
-                listenForMessages();
+            serversList.forEach(serverThing => {
+                const serverButton = document.createElement("button");
+                serverButton.textContent = serverThing;
+                serverButton.addEventListener("click", () => {
+                    server = serverThing + "/";
+                    console.log(server)
+                    listenForMessages();
+                });
+                document.getElementById("servers-container").appendChild(serverButton);
             });
 
             document.getElementById("message-input").addEventListener("keypress", (event) => {
@@ -260,8 +266,6 @@
     <div id="main">
         <div id="servers-container">
             <b>Servers</b>
-            <button id="general">General</button>
-            <button id="test">Test</button>
         </div>
         <div id="content">
             <div id="messages-container"></div>
