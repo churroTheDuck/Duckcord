@@ -71,9 +71,6 @@ body {
 }
 
 #message-input {
-    position: absolute;
-    bottom: 25px;
-    right: 22vw;
     padding: 20px;
     width: 56vw;
     font-family: gg-sans-medium, sans-serif;
