@@ -241,8 +241,8 @@
                     } else {
                         serversList.push(document.getElementById("server-name").value);
                         localStorage.serversList = JSON.stringify(serversList);
-                        listServers();
                         server = document.getElementById("server-name").value + "/";
+                        listServers();
                         listenForMessages();
                     }
                 }
