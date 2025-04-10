@@ -82,6 +82,18 @@
                             hour12: true
                         });
 
+                        if (lastUser != username) {
+                            name.style.fontFamily = "gg-sans-bold";
+                            name.style.marginRight = "10px";
+                            name.textContent = username;
+                            date.style.fontSize = "14px";
+                            date.style.color = "LightGray";
+                            date.textContent = time;
+                        } else {
+                            name.style.display = "none";
+                            messageElement.style.margin = "0px";
+                        }
+
                         switch (username) {
                             case "Lang":
                                 name.style.color = "DodgerBlue";
@@ -122,25 +134,12 @@
                                 name.style.webkitTextFillColor = "transparent";
                                 break;
                             case "Anay":
-                                name.style.background = "linear-gradient(90deg, #55CDFC, #F7A8B8, #FFFFFF, #F7A8B8, #55CDFC)";
-                                name.style.webkitBackgroundClip = "text";
-                                name.style.webkitTextFillColor = "transparent";
+                                name.textContent = username + " 🏳️‍⚧️";
                                 break;
                             default:
                                 console.log("u dont get color");
                         }
                         msg.textContent = `${message}`;
-                        if (lastUser != username) {
-                            name.style.fontFamily = "gg-sans-bold";
-                            name.style.marginRight = "10px";
-                            name.textContent = username;
-                            date.style.fontSize = "14px";
-                            date.style.color = "LightGray";
-                            date.textContent = time;
-                        } else {
-                            name.style.display = "none";
-                            messageElement.style.margin = "0px";
-                        }
                         nameDate.appendChild(name);
                         nameDate.appendChild(date);
                         messageElement.appendChild(nameDate);
@@ -187,7 +186,7 @@
 
         function listServers() {
             serversList = [];
-            document.getElementById("servers-container").innerHTML = "<b>Servers</b><input type='text' id='server-name' placeholder='Server Name'>";
+            document.getElementById("servers-container").innerHTML = "<b>Servers</b><div id='servers-list'><input type='text' id='server-name' placeholder='Server Name'><img src='../plus.svg' id='add-server'></div>";
             if (localStorage.serversList) {
                 serversList = JSON.parse(localStorage.serversList);
             } else {
@@ -235,19 +234,16 @@
 
             listServers();
 
-            document.getElementById("server-name").addEventListener("keypress", (event) => {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    if (serversList.includes(document.getElementById("server-name").value)) {
-                        console.log("Server already exists.");
-                        return;
-                    } else {
-                        serversList.push(document.getElementById("server-name").value);
-                        localStorage.serversList = JSON.stringify(serversList);
-                        server = document.getElementById("server-name").value + "/";
-                        listServers();
-                        listenForMessages();
-                    }
+            document.getElementById("add-server").addEventListener("click", (event) => {
+                if (serversList.includes(document.getElementById("server-name").value)) {
+                    console.log("Server already exists.");
+                    return;
+                } else {
+                    serversList.push(document.getElementById("server-name").value);
+                    localStorage.serversList = JSON.stringify(serversList);
+                    server = document.getElementById("server-name").value + "/";
+                    listServers();
+                    listenForMessages();
                 }
             });
 
@@ -299,7 +295,10 @@
     <div id="main">
         <div id="servers-container">
             <b>Servers</b>
-            <input type="text" id="server-name" placeholder="Server Name">
+            <div id="servers-list">
+                <input type="text" id="server-name" placeholder="Server Name">
+                <button id="add-server">+</button>
+            </div>
         </div>
         <div id="content">
             <div id="messages-container"></div>

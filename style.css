@@ -20,6 +20,7 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    align-items: left;
     width: 80vw;
     padding-left: 2vw;
     padding-right: 2vw;
@@ -72,7 +73,7 @@ body {
 
 #message-input {
     padding: 20px;
-    width: 56vw;
+    width: 100%;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     height: 75px;
@@ -95,6 +96,27 @@ body {
     background-color: #2F3136;
     color: white;
     padding: 20px;
+}
+
+#servers-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: #2F3136;
+    width: 100%;
+    overflow-y: auto;
+}
+
+#add-server {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
 }
 
 h1 {
@@ -121,7 +143,6 @@ button {
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
     text-decoration: underline;
-    width: 100%;
     text-align: left;
     color: #747474;
     background: none;
@@ -141,11 +162,12 @@ b {
 #server-name {
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-right: 20px;
     padding: 10px;
     font-family: gg-sans-medium, sans-serif;
     font-size: 18px;
+    height: 50px;
     background-color: #40444B;
-    width: 100%;
     border-radius: 10px;
     border: none;
     color: #FFFFFF;
